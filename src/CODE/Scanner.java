@@ -18,22 +18,27 @@ public class Scanner {
 
     static {
         keywords = new HashMap<>();
-        keywords.put("and",    AND);
-        keywords.put("class",  CLASS);
-        keywords.put("else",   ELSE);
-        keywords.put("false",  FALSE);
-        keywords.put("for",    FOR);
-        keywords.put("fun",    FUN);
-        keywords.put("if",     IF);
+        keywords.put("AND",    AND);
+        keywords.put("ELSE",   ELSE);
+        keywords.put("FALSE",  FALSE);
+        keywords.put("IF",     IF);
         keywords.put("nil",    NIL);
-        keywords.put("or",     OR);
-        keywords.put("print",  PRINT);
-        keywords.put("return", RETURN);
-        keywords.put("super",  SUPER);
-        keywords.put("this",   THIS);
-        keywords.put("true",   TRUE);
-        keywords.put("var",    VAR);
-        keywords.put("while",  WHILE);
+        keywords.put("OR",     OR);
+        keywords.put("DISPLAY", DISPLAY);
+        keywords.put("TRUE",   TRUE);
+        keywords.put("WHILE",  WHILE);
+        keywords.put("INT",  INT);
+        keywords.put("FLOAT",  FLOAT);
+        keywords.put("CHAR",  CHAR);
+        keywords.put("BOOL",  BOOL);
+        keywords.put("NOT",  NOT);
+        keywords.put("BEGIN IF",  BEGIN_IF);
+        keywords.put("END IF",  END_IF);
+        keywords.put("BEGIN CODE",  BEGIN_CODE);
+        keywords.put("END CODE",  END_CODE);
+        keywords.put("BEGIN WHILE",  BEGIN_WHILE);
+        keywords.put("END WHILE",  END_WHILE);
+        keywords.put("SCAN",  SCAN);
     }
 
     Scanner(String source) {
@@ -56,22 +61,22 @@ public class Scanner {
         switch (c) {
             case '(': addToken(LEFT_PAREN); break;
             case ')': addToken(RIGHT_PAREN); break;
-            case '{': addToken(LEFT_BRACE); break;
-            case '}': addToken(RIGHT_BRACE); break;
             case ',': addToken(COMMA); break;
             case '.': addToken(DOT); break;
             case '-': addToken(MINUS); break;
             case '+': addToken(PLUS); break;
-            case ';': addToken(SEMICOLON); break;
             case '*': addToken(STAR); break;
-            case '!':
-                addToken(match('=') ? BANG_EQUAL : BANG);
-                break;
             case '=':
                 addToken(match('=') ? EQUAL_EQUAL : EQUAL);
                 break;
             case '<':
-                addToken(match('=') ? LESS_EQUAL : LESS);
+                if (match('=')) {
+                    addToken(LESS_EQUAL);
+                } else if (match('>')) {
+                    addToken(NOT_EQUAL);
+                } else {
+                    addToken(LESS);
+                }
                 break;
             case '>':
                 addToken(match('=') ? GREATER_EQUAL : GREATER);
@@ -110,18 +115,25 @@ public class Scanner {
         return c >= '0' && c <= '9';
     }
     private void number() {
+        boolean isFLOAT = false;
         while (isDigit(peek())) advance();
 
         // Look for a fractional part.
         if (peek() == '.' && isDigit(peekNext())) {
+            isFLOAT = true;
             // Consume the "."
             advance();
 
             while (isDigit(peek())) advance();
         }
+        if (isFLOAT) {
+            addToken(FLOAT,
+                    Double.parseDouble(source.substring(start, current)));
+        } else {
+            addToken(INTEGER,
+                    Integer.parseInt(source.substring(start, current)));
+        }
 
-        addToken(NUMBER,
-                Double.parseDouble(source.substring(start, current)));
     }
     private char peekNext() {
         if (current + 1 >= source.length()) return '\0';
