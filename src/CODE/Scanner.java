@@ -129,7 +129,7 @@ public class Scanner {
             while (isDigit(peek())) advance();
         }
         if (isFLOAT) {
-            addToken(FLOAT,
+            addToken(REAL,
                     Double.parseDouble(source.substring(start, current)));
         } else {
             addToken(INTEGER,
