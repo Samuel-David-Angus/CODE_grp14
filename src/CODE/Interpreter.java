@@ -110,6 +110,20 @@ public class Interpreter implements Expr.Visitor<Object>,
         Object right = evaluate(expr.right);
         //remove string later
         switch (expr.operator.type) {
+            case AMPERSAND:
+                String l;
+                String r;
+                if (!(left instanceof String)) {
+                    l = left.toString();
+                } else {
+                    l = (String)left;
+                }
+                if (!(right instanceof String)) {
+                    r = right.toString();
+                } else {
+                    r = (String)right;
+                }
+                return l + r;
             case GREATER:
                 checkNumberOperands(expr.operator, left, right);
                 if (left instanceof Double && right instanceof Double) {
