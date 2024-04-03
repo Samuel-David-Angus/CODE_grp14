@@ -84,6 +84,9 @@ public class Scanner {
             case '/':
                 addToken(SLASH);
                 break;
+            case '%':
+                addToken(PERCENT);
+                break;
             case ' ':
             case '\r':
             case '\t':
