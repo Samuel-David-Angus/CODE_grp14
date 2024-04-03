@@ -1,0 +1,6 @@
+BEGIN CODE
+    DISPLAY 6
+    INT A = 5
+    DISPLAY A + 6
+END CODE
+

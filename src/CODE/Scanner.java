@@ -32,12 +32,9 @@ public class Scanner {
         keywords.put("CHAR",  CHAR);
         keywords.put("BOOL",  BOOL);
         keywords.put("NOT",  NOT);
-        keywords.put("BEGIN IF",  BEGIN_IF);
-        keywords.put("END IF",  END_IF);
-        keywords.put("BEGIN CODE",  BEGIN_CODE);
-        keywords.put("END CODE",  END_CODE);
-        keywords.put("BEGIN WHILE",  BEGIN_WHILE);
-        keywords.put("END WHILE",  END_WHILE);
+        keywords.put("BEGIN",  BEGIN);
+        keywords.put("END",  END);
+        keywords.put("CODE",  CODE);
         keywords.put("SCAN",  SCAN);
     }
 
@@ -103,7 +100,7 @@ public class Scanner {
                 } else if (isAlpha(c)) {
                     identifier();
                 } else {
-                    CODE.error(line, "Unexpected character.");
+                    CODE_LANG.error(line, "Unexpected character.");
                 }
                 break;
         }
@@ -160,7 +157,7 @@ public class Scanner {
         }
 
         if (isAtEnd()) {
-            CODE.error(line, "Unterminated string.");
+            CODE_LANG.error(line, "Unterminated string.");
             return;
         }
 

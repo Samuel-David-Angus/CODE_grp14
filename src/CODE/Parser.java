@@ -18,9 +18,15 @@ public class Parser {
     }
     List<Stmt> parse() {
         List<Stmt> statements = new ArrayList<>();
-        while (!isAtEnd()) {
-            statements.add(declaration());
+
+        if (match(BEGIN) && match(CODE) && match(NEWLINE)) {
+            while (!check(END) && !isAtEnd()) {
+                statements.add(declaration());
+            }
         }
+        consume(END, "enclose with END CODE");
+        consume(CODE, "enclose with END CODE");
+        consume(NEWLINE, "enclose with END CODE");
 
         return statements;
     }
@@ -127,7 +133,7 @@ public class Parser {
         return tokens.get(current - 1);
     }
     private ParseError error(Token token, String message) {
-        CODE.error(token, message);
+        CODE_LANG.error(token, message);
         return new ParseError();
     }
     private void synchronize() {
