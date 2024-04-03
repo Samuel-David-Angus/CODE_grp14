@@ -65,6 +65,7 @@ public class Scanner {
             case '*': addToken(STAR); break;
             case '&': addToken(AMPERSAND); break;
             case '#': while (!isAtEnd()) advance(); break;
+            case '$': addToken(DOLLAR); break;
             case '=':
                 addToken(match('=') ? EQUAL_EQUAL : EQUAL);
                 break;

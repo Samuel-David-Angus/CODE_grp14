@@ -1,5 +1,5 @@
 BEGIN CODE
-    DISPLAY 6
+    DISPLAY 6 & 8 & $
     INT A = 5
     DISPLAY A + 6
 END CODE
