@@ -66,6 +66,7 @@ public class Scanner {
             case '-': addToken(MINUS); break;
             case '+': addToken(PLUS); break;
             case '*': addToken(STAR); break;
+            case ';': addToken(SEMICOLON); break;
             case '=':
                 addToken(match('=') ? EQUAL_EQUAL : EQUAL);
                 break;
@@ -106,7 +107,7 @@ public class Scanner {
         }
     }
     private void identifier() {
-        while (isAlphaNumeric(peek()) || peek() == ' ') advance();
+        while (isAlphaNumeric(peek())) advance();
 
         String text = source.substring(start, current);
         TokenType type = keywords.get(text);
