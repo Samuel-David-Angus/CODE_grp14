@@ -68,6 +68,7 @@ public class Scanner {
             case '*': addToken(STAR); break;
             case ';': addToken(SEMICOLON); break;
             case '&': addToken(AMPERSAND); break;
+            case '#': while (peek() != '\n' && !isAtEnd()) advance(); break;
             case '=':
                 addToken(match('=') ? EQUAL_EQUAL : EQUAL);
                 break;
