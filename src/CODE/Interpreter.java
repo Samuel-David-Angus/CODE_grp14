@@ -212,6 +212,12 @@ public class Interpreter implements Expr.Visitor<Object>,
                     return (Integer)left / (Integer) right;
                 }
 
+            case PERCENT:
+                checkNumberOperands(expr.operator, left, right);
+                if (left instanceof Integer && right instanceof Integer) {
+                    return (Integer)left % (Integer)right;
+                }
+
             case STAR:
                 checkNumberOperands(expr.operator, left, right);
                 if (left instanceof Double && right instanceof Double) {

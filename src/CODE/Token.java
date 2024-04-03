@@ -21,7 +21,7 @@ public class Token {
 enum TokenType {
     // Single-character tokens.
     LEFT_PAREN, RIGHT_PAREN,
-    COMMA, DOT, MINUS, PLUS, SLASH, STAR, AMPERSAND, NEWLINE, DOLLAR,
+    COMMA, DOT, MINUS, PLUS, SLASH, STAR, PERCENT, AMPERSAND, NEWLINE, DOLLAR,
 
     // One or two character tokens.
     NOT_EQUAL,
