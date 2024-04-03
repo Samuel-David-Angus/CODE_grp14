@@ -11,6 +11,9 @@ public class Parser {
     Parser(List<Token> tokens) {
 
         this.tokens = tokens;
+        /*for (Token t: tokens) {
+            System.out.println(t);
+        }*/
 
     }
     List<Stmt> parse() {
@@ -41,7 +44,7 @@ public class Parser {
     }
     private Stmt printStatement() {
         Expr value = expression();
-        consume(SEMICOLON, "Expect ';' after value.");
+        consume(NEWLINE, "Expect ';' after value.");
         return new Stmt.Print(value);
     }
     private Stmt varDeclaration() {
@@ -52,12 +55,12 @@ public class Parser {
             initializer = expression();
         }
 
-        consume(SEMICOLON, "Expect ';' after variable declaration.");
+        consume(NEWLINE, "Expect ';' after variable declaration.");
         return new Stmt.Var(name, initializer);
     }
     private Stmt expressionStatement() {
         Expr expr = expression();
-        consume(SEMICOLON, "Expect ';' after expression.");
+        consume(NEWLINE, "Expect ';' after expression.");
         return new Stmt.Expression(expr);
     }
     private Expr assignment() {
@@ -131,7 +134,7 @@ public class Parser {
         advance();
 
         while (!isAtEnd()) {
-            if (previous().type == SEMICOLON) return;
+            if (previous().type == NEWLINE) return;
 
             switch (peek().type) {
                 case IF:

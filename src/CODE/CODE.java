@@ -36,6 +36,7 @@ public class CODE {
         for (;;) {
             System.out.print("> ");
             String line = reader.readLine();
+            line += "\n";
             if (line == null) break;
             run(line);
             hadError = false;

@@ -66,9 +66,8 @@ public class Scanner {
             case '-': addToken(MINUS); break;
             case '+': addToken(PLUS); break;
             case '*': addToken(STAR); break;
-            case ';': addToken(SEMICOLON); break;
             case '&': addToken(AMPERSAND); break;
-            case '#': while (peek() != '\n' && !isAtEnd()) advance(); break;
+            case '#': while (!isAtEnd()) advance(); break;
             case '=':
                 addToken(match('=') ? EQUAL_EQUAL : EQUAL);
                 break;
@@ -94,6 +93,7 @@ public class Scanner {
                 break;
 
             case '\n':
+                addToken(NEWLINE);
                 line++;
                 break;
             case '"': string(); break;
