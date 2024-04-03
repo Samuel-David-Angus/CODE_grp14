@@ -55,6 +55,7 @@ public class Parser {
     }
     private Stmt varDeclaration() {
         Token name = consume(IDENTIFIER, "Expect variable name.");
+        Token type = tokens.get(current - 2);
 
         Expr initializer = null;
         if (match(EQUAL)) {
@@ -62,7 +63,7 @@ public class Parser {
         }
 
         consume(NEWLINE, "Expect ';' after variable declaration.");
-        return new Stmt.Var(name, initializer);
+        return new Stmt.Var(name, initializer, type);
     }
     private Stmt expressionStatement() {
         Expr expr = expression();

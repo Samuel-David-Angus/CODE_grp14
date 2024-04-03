@@ -46,9 +46,10 @@ abstract class Stmt {
     final Expr expression;
   }
   static class Var extends Stmt {
-    Var(Token name, Expr initializer) {
+    Var(Token name, Expr initializer, Token type) {
       this.name = name;
       this.initializer = initializer;
+      this.type = type;
     }
 
     @Override
@@ -57,6 +58,7 @@ abstract class Stmt {
     }
 
     final Token name;
+    final Token type;
     final Expr initializer;
   }
 

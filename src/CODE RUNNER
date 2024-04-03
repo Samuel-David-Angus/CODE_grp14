@@ -1,6 +1,5 @@
 BEGIN CODE
-    DISPLAY 6 & 8 & $
-    INT A = 5
-    DISPLAY A + 6
+    BOOL A = TRUE
+    A = 4
 END CODE
 

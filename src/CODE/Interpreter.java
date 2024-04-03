@@ -32,12 +32,11 @@ public class Interpreter implements Expr.Visitor<Object>,
             value = evaluate(stmt.initializer);
         }
 
-        environment.define(stmt.name.lexeme, value);
+        environment.define(stmt.name, value, stmt.type.lexeme);
         return null;
     }
     @Override
     public Object visitAssignExpr(Expr.Assign expr) {
-        System.out.println("test");
         Object value = evaluate(expr.value);
         environment.assign(expr.name, value);
         return value;

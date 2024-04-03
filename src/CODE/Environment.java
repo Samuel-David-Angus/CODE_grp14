@@ -5,6 +5,7 @@ import java.util.Map;
 public class Environment {
     final Environment enclosing;
     private final Map<String, Object> values = new HashMap<>();
+    private final Map<String, Object> types = new HashMap<>();
     Environment() {
         enclosing = null;
     }
@@ -22,8 +23,12 @@ public class Environment {
     }
     void assign(Token name, Object value) {
         if (values.containsKey(name.lexeme)) {
-            values.put(name.lexeme, value);
-            return;
+            if (values.get(name.lexeme).getClass() == value.getClass()) {
+                values.put(name.lexeme, value);
+                return;
+            }
+            throw new RuntimeError(name,
+                    "Assignment not matching types '" + name.lexeme + "'.");
         }
         if (enclosing != null) {
             enclosing.assign(name, value);
@@ -32,8 +37,15 @@ public class Environment {
         throw new RuntimeError(name,
                 "Undefined variable '" + name.lexeme + "'.");
     }
-    void define(String name, Object value) {
-        values.put(name, value);
+    void define(Token name, Object value, String type) {
+        if (type.equals("BOOL") && value instanceof Boolean || type.equals("INT") && value instanceof Integer || type.equals("FLOAT") && value instanceof Double ) {
+            values.put(name.lexeme, value);
+            types.put(name.lexeme, type);
+        } else {
+            throw new RuntimeError(name,
+                    "Wrong type assignment '" + name.lexeme + "'.");
+        }
+
     }
 
 }
