@@ -5,7 +5,7 @@ import java.util.Map;
 public class Environment {
     final Environment enclosing;
     private final Map<String, Object> values = new HashMap<>();
-    private final Map<String, Object> types = new HashMap<>();
+    private final Map<String, String> types = new HashMap<>();
     Environment() {
         enclosing = null;
     }
@@ -18,6 +18,14 @@ public class Environment {
             return values.get(name.lexeme);
         }
         if (enclosing != null) return enclosing.get(name);
+        throw new RuntimeError(name,
+                "Undefined variable '" + name.lexeme + "'.");
+    }
+    String getType(Token name) {
+        if (types.containsKey(name.lexeme)) {
+            return types.get(name.lexeme);
+        }
+        if (enclosing != null) return enclosing.getType(name);
         throw new RuntimeError(name,
                 "Undefined variable '" + name.lexeme + "'.");
     }

@@ -23,7 +23,8 @@ public class GenerateAST {
                 "Block      : List<Stmt> statements",
                 "Expression : Expr expression",
                 "Print      : Expr expression",
-                "Var        : Token name, Expr initializer, Token Type"
+                "Var        : Token name, Expr initializer, Token type",
+                "Scan       : Token name"
         ));
     }
     private static void defineAst(

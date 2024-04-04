@@ -1,6 +1,7 @@
 package CODE;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Interpreter implements Expr.Visitor<Object>,
         Stmt.Visitor<Void> {
@@ -35,6 +36,28 @@ public class Interpreter implements Expr.Visitor<Object>,
         environment.define(stmt.name, value, stmt.type.lexeme);
         return null;
     }
+
+    @Override
+    public Void visitScanStmt(Stmt.Scan stmt) {
+        Token var = stmt.name;
+        String type = environment.getType(var);
+        Scanner scanner = new Scanner(System.in);
+        Object val = null;
+        if (type.equals("BOOL")) {
+            val = scanner.nextBoolean();
+            scanner.nextLine();
+        } else if (type.equals("INT")) {
+            val = scanner.nextInt();
+            scanner.nextLine();
+        } else if (type.equals("FLOAT")) {
+            val = scanner.nextFloat();
+            scanner.nextLine();
+        }
+        environment.assign(var, val);
+
+        return null;
+    }
+
     @Override
     public Object visitAssignExpr(Expr.Assign expr) {
         Object value = evaluate(expr.value);

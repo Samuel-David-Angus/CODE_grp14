@@ -8,6 +8,7 @@ abstract class Stmt {
     R visitExpressionStmt(Expression stmt);
     R visitPrintStmt(Print stmt);
     R visitVarStmt(Var stmt);
+    R visitScanStmt(Scan stmt);
   }
   static class Block extends Stmt {
     Block(List<Stmt> statements) {
@@ -58,8 +59,20 @@ abstract class Stmt {
     }
 
     final Token name;
-    final Token type;
     final Expr initializer;
+    final Token type;
+  }
+  static class Scan extends Stmt {
+    Scan(Token name) {
+      this.name = name;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitScanStmt(this);
+    }
+
+    final Token name;
   }
 
   abstract <R> R accept(Visitor<R> visitor);

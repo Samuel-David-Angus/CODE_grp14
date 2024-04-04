@@ -1,5 +1,6 @@
 BEGIN CODE
-    BOOL A = TRUE
-    A = 4
+    INT A = 4
+    SCAN A
+    DISPLAY A
 END CODE
 

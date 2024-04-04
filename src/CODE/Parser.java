@@ -45,6 +45,7 @@ public class Parser {
     }
     private Stmt statement() {
         if (match(DISPLAY)) return printStatement();
+        if (match(SCAN)) return scanStatement();
 
         return expressionStatement();
     }
@@ -52,6 +53,11 @@ public class Parser {
         Expr value = expression();
         consume(NEWLINE, "Expect ';' after value.");
         return new Stmt.Print(value);
+    }
+    private  Stmt scanStatement() {
+        Token name = consume(IDENTIFIER, "Expect variable name.");
+        consume(NEWLINE, "Expect ';' after value.");
+        return new Stmt.Scan(name);
     }
     private Stmt varDeclaration() {
         Token name = consume(IDENTIFIER, "Expect variable name.");
