@@ -31,7 +31,7 @@ public class Environment {
     }
     void assign(Token name, Object value) {
         if (values.containsKey(name.lexeme)) {
-            if (values.get(name.lexeme).getClass() == value.getClass()) {
+            if (values.get(name.lexeme) == null || values.get(name.lexeme).getClass() == value.getClass()) {
                 values.put(name.lexeme, value);
                 return;
             }
@@ -46,7 +46,7 @@ public class Environment {
                 "Undefined variable '" + name.lexeme + "'.");
     }
     void define(Token name, Object value, String type) {
-        if (type.equals("BOOL") && value instanceof Boolean || type.equals("INT") && value instanceof Integer || type.equals("FLOAT") && value instanceof Double ) {
+        if (type.equals("BOOL") && value instanceof Boolean || type.equals("INT") && value instanceof Integer || type.equals("FLOAT") && value instanceof Double || value == null) {
             values.put(name.lexeme, value);
             types.put(name.lexeme, type);
         } else {

@@ -1,6 +1,7 @@
 BEGIN CODE
-    INT A = 4
-    SCAN A
-    DISPLAY A
+    # no implicit typecasting
+    FLOAT A
+    A = 5.0
+    DISPLAY A / 2.0
 END CODE
 
