@@ -98,6 +98,7 @@ public class Scanner {
                 line++;
                 break;
             case '"': string(); break;
+            case '\'': chara(); break;
             default:
                 if (isDigit(c)) {
                     number();
@@ -171,6 +172,25 @@ public class Scanner {
         // Trim the surrounding quotes.
         String value = source.substring(start + 1, current - 1);
         addToken(STRING, value);
+    }
+    private void chara() {
+        for (int i = 0; i < 2; i++) {
+            if (peek() != '\n') {
+                advance();
+            } else {
+                line++;
+            }
+        }
+        String value = source.substring(start, current);
+
+        if (value.charAt(2) != '\'') {
+            CODE_LANG.error(line, "Unterminated char.");
+            return;
+        }
+
+
+        addToken(CHARACTER, value.charAt(1));
+
     }
     private char peek() {
         if (isAtEnd()) return '\0';
