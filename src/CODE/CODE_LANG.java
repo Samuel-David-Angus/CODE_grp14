@@ -24,7 +24,7 @@ public class CODE_LANG {
     }
     private static void runFile(String path) throws IOException {
         byte[] bytes = Files.readAllBytes(Paths.get(path));
-        run(new String(bytes, Charset.defaultCharset()));
+        run(new String(bytes, Charset.defaultCharset()) + "\n");
 
         if (hadError) System.exit(65);
         if (hadRuntimeError) System.exit(70);
