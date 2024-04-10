@@ -46,7 +46,7 @@ public class Environment {
                 "Undefined variable '" + name.lexeme + "'.");
     }
     void define(Token name, Object value, String type) {
-        if (type.equals("BOOL") && value instanceof Boolean || type.equals("INT") && value instanceof Integer || type.equals("FLOAT") && value instanceof Double || value == null) {
+        if (type.equals("BOOL") && value instanceof Boolean || type.equals("INT") && value instanceof Integer || type.equals("FLOAT") && value instanceof Double || type.equals("CHAR") && value instanceof Character || value == null) {
             values.put(name.lexeme, value);
             types.put(name.lexeme, type);
         } else {
