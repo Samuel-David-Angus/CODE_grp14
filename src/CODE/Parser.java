@@ -207,7 +207,7 @@ public class Parser {
         if (match(NIL)) return new Expr.Literal(null);
         if (match(DOLLAR)) return new Expr.Literal("\n");
 
-        if (match(INTEGER, REAL, STRING)) {
+        if (match(INTEGER, REAL, STRING, CHARACTER)) {
             return new Expr.Literal(previous().literal);
         }
         if (match(IDENTIFIER)) {
