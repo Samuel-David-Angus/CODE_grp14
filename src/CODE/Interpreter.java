@@ -52,6 +52,8 @@ public class Interpreter implements Expr.Visitor<Object>,
         } else if (type.equals("FLOAT")) {
             val = scanner.nextFloat();
             scanner.nextLine();
+        } else if (type.equals("CHAR")) {
+            val = scanner.nextLine().charAt(0);
         }
         environment.assign(var, val);
 
