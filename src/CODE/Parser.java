@@ -52,7 +52,6 @@ public class Parser {
 
         return expressionStatement();
     }
-
     private Stmt ifStatement() {
         consume(LEFT_PAREN, "Expect '(' after 'if'.");
         Expr condition = expression();
