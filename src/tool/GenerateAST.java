@@ -27,8 +27,7 @@ public class GenerateAST {
                         " Stmt elseBranch",
                 "Print      : Expr expression",
                 "Var        : Token name, Expr initializer, Token type",
-                "Scan       : Token name",
-                "While      : Expr condition, Stmt body"
+                "Scan       : Token name"
         ));
     }
     private static void defineAst(
