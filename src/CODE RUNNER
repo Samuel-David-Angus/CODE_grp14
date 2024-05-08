@@ -1,7 +1,9 @@
 BEGIN CODE
-    # no implicit typecasting
-    FLOAT A
-    A = 5.0
-    DISPLAY A / 2.0
+    INT i = 0
+    WHILE (i<=3)
+    BEGIN WHILE
+    i = i + 1
+    END WHILE
+    DISPLAY i
 END CODE
 
