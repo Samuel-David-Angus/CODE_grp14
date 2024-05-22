@@ -1,9 +1,5 @@
 BEGIN CODE
-    INT i = 0
-    WHILE (i<=3)
-    BEGIN WHILE
-    i = i + 1
-    END WHILE
-    DISPLAY i
+    BOOL A = "FALSE"
+    DISPLAY A
 END CODE
 

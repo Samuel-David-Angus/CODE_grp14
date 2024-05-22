@@ -20,12 +20,10 @@ public class Scanner {
         keywords = new HashMap<>();
         keywords.put("AND",    AND);
         keywords.put("ELSE",   ELSE);
-        keywords.put("FALSE",  FALSE);
         keywords.put("IF",     IF);
         keywords.put("nil",    NIL);
         keywords.put("OR",     OR);
         keywords.put("DISPLAY", DISPLAY);
-        keywords.put("TRUE",   TRUE);
         keywords.put("WHILE",  WHILE);
         keywords.put("INT",  INT);
         keywords.put("FLOAT",  FLOAT);
@@ -171,7 +169,13 @@ public class Scanner {
 
         // Trim the surrounding quotes.
         String value = source.substring(start + 1, current - 1);
-        addToken(STRING, value);
+        if (value.equals("TRUE")) {
+            addToken(TRUE);
+        } else if (value.equals("FALSE")) {
+            addToken(FALSE);
+        } else {
+            addToken(STRING, value);
+        }
     }
     private void chara() {
         for (int i = 0; i < 2; i++) {
