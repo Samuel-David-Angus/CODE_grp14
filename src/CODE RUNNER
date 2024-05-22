@@ -1,5 +1,5 @@
 BEGIN CODE
-    INT A = -298
-    DISPLAY A
+    INT A = -298, B = 5
+    DISPLAY A & " " & B
 END CODE
 

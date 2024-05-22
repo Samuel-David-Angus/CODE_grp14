@@ -8,6 +8,7 @@ public class Parser {
     private static class ParseError extends RuntimeException {}
     private final List<Token> tokens;
     private int current = 0;
+    private List<Stmt> statements = null;
 
     Parser(List<Token> tokens) {
 
@@ -22,7 +23,7 @@ public class Parser {
 
     }
     List<Stmt> parse() {
-        List<Stmt> statements = new ArrayList<>();
+        statements = new ArrayList<>();
 
         if (match(BEGIN) && match(CODE) && match(NEWLINE)) {
             while (!check(END) && !isAtEnd()) {
@@ -40,7 +41,10 @@ public class Parser {
     }
     private Stmt declaration() {
         try {
-            if (match(INT, BOOL, FLOAT, CHAR)) return varDeclaration();
+            if (match(INT, BOOL, FLOAT, CHAR)) {
+                Token type = tokens.get(current - 1);
+                return varDeclaration(type);
+            }
 
             return statement();
         } catch (ParseError error) {
@@ -110,17 +114,19 @@ public class Parser {
         consume(NEWLINE, "Expect ';' after value.");
         return new Stmt.Scan(name);
     }
-    private Stmt varDeclaration() {
-        Token name = consume(IDENTIFIER, "Expect variable name.");
-        Token type = tokens.get(current - 2);
+    private Stmt varDeclaration(Token type) {
+        do {
+            Token name = consume(IDENTIFIER, "Expect variable name.");
 
-        Expr initializer = null;
-        if (match(EQUAL)) {
-            initializer = expression();
-        }
 
+            Expr initializer = null;
+            if (match(EQUAL)) {
+                initializer = expression();
+            }
+            statements.add(new Stmt.Var(name, initializer, type));
+        } while (match(COMMA));
         consume(NEWLINE, "Incorrect variable declaration.");
-        return new Stmt.Var(name, initializer, type);
+        return statements.remove(statements.size() - 1);
     }
     private Stmt whileStatement() {
         consume(LEFT_PAREN, "Expect '(' after 'while'.");
