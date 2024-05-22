@@ -145,6 +145,9 @@ public class Interpreter implements Expr.Visitor<Object>,
         switch (expr.operator.type) {
             case MINUS:
                 checkNumberOperand(expr.operator, right);
+                if (right instanceof Integer) {
+                    return -(Integer)right;
+                }
                 return -(double)right;
             case NOT:
                 return !isTruthy(right);
@@ -158,7 +161,7 @@ public class Interpreter implements Expr.Visitor<Object>,
         return environment.get(expr.name);
     }
     private void checkNumberOperand(Token operator, Object operand) {
-        if (operand instanceof Double) return;
+        if (operand instanceof Double || operand instanceof Integer) return;
         throw new RuntimeError(operator, "Operand must be a number.");
     }
     private void checkNumberOperands(Token operator,

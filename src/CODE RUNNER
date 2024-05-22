@@ -1,5 +1,5 @@
 BEGIN CODE
-    BOOL A = "FALSE"
+    INT A = -298
     DISPLAY A
 END CODE
 
