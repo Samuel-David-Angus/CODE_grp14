@@ -100,25 +100,6 @@ public class Parser {
         if (elseIfFlag) return new Stmt.If(condition2, thenBranch, elseBranch);
         else return new Stmt.If(condition, thenBranch, elseBranch);
     }
-    private Stmt whileStatement() {
-        consume(LEFT_PAREN, "Expect '(' after 'while'.");
-        Expr condition = expression();
-        consume(RIGHT_PAREN, "Expect ')' after while condition.");
-
-        consume(NEWLINE, "enclose with BEGIN WHILE");
-        consume(BEGIN, "enclose with BEGIN WHILE");
-        consume(WHILE, "enclose with BEGIN WHILE");
-        consume(NEWLINE, "enclose with BEGIN WHILE");
-
-        Stmt body = statement();
-
-        consume(END, "enclose with END WHILE");
-        consume(WHILE, "enclose with END WHILE");
-        consume(NEWLINE, "enclose with END WHILE");
-
-        return new Stmt.While(condition, body);
-    }
-
     private Stmt printStatement() {
         Expr value = expression();
         consume(NEWLINE, "Expect ';' after value.");
@@ -140,6 +121,24 @@ public class Parser {
 
         consume(NEWLINE, "Incorrect variable declaration.");
         return new Stmt.Var(name, initializer, type);
+    }
+    private Stmt whileStatement() {
+        consume(LEFT_PAREN, "Expect '(' after 'while'.");
+        Expr condition = expression();
+        consume(RIGHT_PAREN, "Expect ')' after while condition.");
+
+        consume(NEWLINE, "enclose with BEGIN WHILE");
+        consume(BEGIN, "enclose with BEGIN WHILE");
+        consume(WHILE, "enclose with BEGIN WHILE");
+        consume(NEWLINE, "enclose with BEGIN WHILE");
+
+        Stmt body = statement();
+
+        consume(END, "enclose with END WHILE");
+        consume(WHILE, "enclose with END WHILE");
+        consume(NEWLINE, "enclose with END WHILE");
+
+        return new Stmt.While(condition, body);
     }
     private Stmt expressionStatement() {
         Expr expr = expression();
