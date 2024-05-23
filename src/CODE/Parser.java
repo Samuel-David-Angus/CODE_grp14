@@ -53,8 +53,8 @@ public class Parser {
     }
     private Stmt statement() {
         if (match(IF)) return ifStatement();
-        if (match(DISPLAY)) return printStatement();
-        if (match(SCAN)) return scanStatement();
+        if (match(DISPLAY) && match(COLON)) return printStatement();
+        if (match(SCAN) && match(COLON)) return scanStatement();
         if (match(WHILE)) return whileStatement();
         if(match(BEGIN) && (match(IF) || match(WHILE)) && match(NEWLINE)) return new Stmt.Block(block());
 
