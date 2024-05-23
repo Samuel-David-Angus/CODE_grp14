@@ -12,6 +12,7 @@ public class CODE_LANG {
     private static final Interpreter interpreter = new Interpreter();
     static boolean hadError = false;
     static boolean hadRuntimeError = false;
+    static boolean noDisplay = true;
     public static void main(String[] args) throws IOException {
         if (args.length > 1) {
             System.out.println("Usage: jlox [script]");
@@ -28,6 +29,7 @@ public class CODE_LANG {
 
         if (hadError) System.exit(65);
         if (hadRuntimeError) System.exit(70);
+        if (noDisplay) System.out.println("\nNo error");
     }
     private static void runPrompt() throws IOException {
         InputStreamReader input = new InputStreamReader(System.in);
