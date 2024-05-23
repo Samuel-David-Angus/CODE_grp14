@@ -56,6 +56,7 @@ public class Scanner {
         switch (c) {
             case '(': addToken(LEFT_PAREN); break;
             case ')': addToken(RIGHT_PAREN); break;
+            case ':': addToken(COLON); break;
             case ',': addToken(COMMA); break;
             case '.': addToken(DOT); break;
             case '-': addToken(MINUS); break;
@@ -96,6 +97,7 @@ public class Scanner {
                 line++;
                 break;
             case '"': string(); break;
+            case '[': string(); break;
             case '\'': chara(); break;
             default:
                 if (isDigit(c)) {
@@ -154,7 +156,7 @@ public class Scanner {
         return isAlpha(c) || isDigit(c);
     }
     private void string() {
-        while (peek() != '"' && !isAtEnd()) {
+        while (peek() != '"' && peek() != ']' && !isAtEnd()) {
             if (peek() == '\n') line++;
             advance();
         }
