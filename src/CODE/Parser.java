@@ -12,11 +12,10 @@ public class Parser {
 
     Parser(List<Token> tokens) {
         this.tokens = tokens;
-        //SET TO true TO PRINT TOKENS FOR DEBUGGING
-        if (false) {
-            for (Token t: tokens) {
-                System.out.println(t);
-            }
+        for (Token t : tokens) {
+            //SET TO true TO PRINT TOKENS FOR DEBUGGING
+            if (false) System.out.println(t);
+            if (t.type.equals(DISPLAY)) CODE_LANG.noDisplay = false;
         }
     }
     List<Stmt> parse() {
@@ -71,6 +70,47 @@ public class Parser {
 
         Stmt elseBranch = null;
 
+        if (match(ELSE)) {
+            if (match(IF)) {
+                // Handle "else if" condition
+                consume(LEFT_PAREN, "Expect '(' after 'else if'.");
+                Expr elseIfCondition = expression();
+                consume(RIGHT_PAREN, "Expect ')' after 'else if' condition.");
+                consume(NEWLINE, "enclose with BEGIN IF");
+
+                Stmt elseIfBranch = statement();
+
+                //elseBranch = new Stmt.If(elseIfCondition, elseIfBranch, null);
+                //RECURSION
+                //elseStatement(elseBranch);
+
+                if (match(ELSE)) {
+                    // Handle "if, else if, else" branch
+                    consume(NEWLINE, "enclose with BEGIN IF");
+
+                    //Stmt elseIfElseBranch = statement();
+                }
+                elseBranch = new Stmt.If(elseIfCondition, elseIfBranch, null);
+            } else {
+                // Handle "else" branch
+                consume(NEWLINE, "enclose with BEGIN IF");
+
+                elseBranch = statement();
+            }
+        }
+
+        return new Stmt.If(condition, thenBranch, elseBranch);
+    }
+    /*private Stmt ifStatement() {
+        consume(LEFT_PAREN, "Expect '(' after 'if'.");
+        Expr condition = expression();
+        consume(RIGHT_PAREN, "Expect ')' after if condition.");
+        consume(NEWLINE, "Expect NEWLINE after )");
+
+        Stmt thenBranch = statement();
+
+        Stmt elseBranch = null;
+
         elseStatement(elseBranch);
 
         return new Stmt.If(condition, thenBranch, elseBranch);
@@ -104,7 +144,7 @@ public class Parser {
                 elseBranch = statement();
             }
         }
-    }
+    }*/
     private Stmt printStatement() {
         Expr value = expression();
         consume(NEWLINE, "Expect ';' after value.");
