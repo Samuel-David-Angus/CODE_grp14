@@ -11,16 +11,13 @@ public class Parser {
     private List<Stmt> statements = null;
 
     Parser(List<Token> tokens) {
-
         this.tokens = tokens;
-        //PRINTS TOKENS FOR DEBUGGING
+        //SET TO true TO PRINT TOKENS FOR DEBUGGING
         if (false) {
             for (Token t: tokens) {
                 System.out.println(t);
             }
         }
-
-
     }
     List<Stmt> parse() {
         statements = new ArrayList<>();
@@ -33,6 +30,9 @@ public class Parser {
         consume(END, "enclose with END CODE");
         consume(CODE, "enclose with END CODE");
         consume(NEWLINE, "enclose with END CODE");
+        if (!isAtEnd()) {
+            throw error(peek(), "Unexpected token after END CODE");
+        }
 
         return statements;
     }
@@ -53,44 +53,57 @@ public class Parser {
         }
     }
     private Stmt statement() {
-        //if (match(IF) && !(match(BEGIN) && match(IF)) && !(match(END) && match(IF))) return ifStatement();
         if (match(IF)) return ifStatement();
         if (match(DISPLAY)) return printStatement();
         if (match(SCAN)) return scanStatement();
         if (match(WHILE)) return whileStatement();
         if(match(BEGIN) && (match(IF) || match(WHILE)) && match(NEWLINE)) return new Stmt.Block(block());
 
-
         return expressionStatement();
     }
     private Stmt ifStatement() {
-        boolean elseIfFlag = false;
-
         consume(LEFT_PAREN, "Expect '(' after 'if'.");
         Expr condition = expression();
-        Expr condition2 = null;
         consume(RIGHT_PAREN, "Expect ')' after if condition.");
         consume(NEWLINE, "Expect NEWLINE after )");
 
-
         Stmt thenBranch = statement();
 
-
         Stmt elseBranch = null;
+
+        elseStatement(elseBranch);
+
+        return new Stmt.If(condition, thenBranch, elseBranch);
+    }
+    private void elseStatement(Stmt elseBranch) {
         if (match(ELSE)) {
             if (match(IF)) {
-                elseIfFlag = true;
-                consume(LEFT_PAREN, "Expect '(' after 'if'.");
-                condition2 = expression();
-                consume(RIGHT_PAREN, "Expect ')' after if condition.");
+                // Handle "else if" condition
+                consume(LEFT_PAREN, "Expect '(' after 'else if'.");
+                Expr elseIfCondition = expression();
+                consume(RIGHT_PAREN, "Expect ')' after 'else if' condition.");
+                consume(NEWLINE, "enclose with BEGIN IF");
+
+                Stmt elseIfBranch = statement();
+
+                //elseBranch = new Stmt.If(elseIfCondition, elseIfBranch, null);
+                //RECURSION
+                //elseStatement(elseBranch);
+
+                if (match(ELSE)) {
+                    // Handle "if, else if, else" branch
+                    consume(NEWLINE, "enclose with BEGIN IF");
+
+                    //Stmt elseIfElseBranch = statement();
+                }
+                elseBranch = new Stmt.If(elseIfCondition, elseIfBranch, null);
+            } else {
+                // Handle "else" branch
+                consume(NEWLINE, "enclose with BEGIN IF");
+
+                elseBranch = statement();
             }
-            consume(NEWLINE, "Expect NEWLINE");
-            elseBranch = statement();
-
         }
-
-        if (elseIfFlag) return new Stmt.If(condition2, thenBranch, elseBranch);
-        else return new Stmt.If(condition, thenBranch, elseBranch);
     }
     private Stmt printStatement() {
         Expr value = expression();
