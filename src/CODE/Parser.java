@@ -58,6 +58,8 @@ public class Parser {
         if (match(DISPLAY)) return printStatement();
         if (match(SCAN)) return scanStatement();
         if (match(WHILE)) return whileStatement();
+        if(match(BEGIN) && (match(IF) || match(WHILE)) && match(NEWLINE)) return new Stmt.Block(block());
+
 
         return expressionStatement();
     }
@@ -68,17 +70,11 @@ public class Parser {
         Expr condition = expression();
         Expr condition2 = null;
         consume(RIGHT_PAREN, "Expect ')' after if condition.");
+        consume(NEWLINE, "Expect NEWLINE after )");
 
-        consume(NEWLINE, "enclose with BEGIN IF");
-        consume(BEGIN, "enclose with BEGIN IF");
-        consume(IF, "enclose with BEGIN IF");
-        consume(NEWLINE, "enclose with BEGIN IF");
 
         Stmt thenBranch = statement();
 
-        consume(END, "enclose with END IF");
-        consume(IF, "enclose with END IF");
-        consume(NEWLINE, "enclose with END IF");
 
         Stmt elseBranch = null;
         if (match(ELSE)) {
@@ -88,17 +84,9 @@ public class Parser {
                 condition2 = expression();
                 consume(RIGHT_PAREN, "Expect ')' after if condition.");
             }
-
-            consume(NEWLINE, "enclose with BEGIN IF1");
-            consume(BEGIN, "enclose with BEGIN IF2");
-            consume(IF, "enclose with BEGIN IF3");
-            consume(NEWLINE, "enclose with BEGIN IF4");
-
+            consume(NEWLINE, "Expect NEWLINE");
             elseBranch = statement();
 
-            consume(END, "enclose with END IF");
-            consume(IF, "enclose with END IF");
-            consume(NEWLINE, "enclose with END IF");
         }
 
         if (elseIfFlag) return new Stmt.If(condition2, thenBranch, elseBranch);
@@ -134,15 +122,9 @@ public class Parser {
         consume(RIGHT_PAREN, "Expect ')' after while condition.");
 
         consume(NEWLINE, "enclose with BEGIN WHILE");
-        consume(BEGIN, "enclose with BEGIN WHILE");
-        consume(WHILE, "enclose with BEGIN WHILE");
-        consume(NEWLINE, "enclose with BEGIN WHILE");
 
         Stmt body = statement();
 
-        consume(END, "enclose with END WHILE");
-        consume(WHILE, "enclose with END WHILE");
-        consume(NEWLINE, "enclose with END WHILE");
 
         return new Stmt.While(condition, body);
     }
@@ -150,6 +132,22 @@ public class Parser {
         Expr expr = expression();
         consume(NEWLINE, "Expect ';' after expression.");
         return new Stmt.Expression(expr);
+    }
+    private List<Stmt> block() {
+        List<Stmt> statements = new ArrayList<>();
+
+        while (!check(END) && !isAtEnd()) {
+            statements.add(declaration());
+        }
+        if (match(END)) {
+            if (!(match(IF) || match(WHILE))) throw error(peek(), "Expect either 'IF' or 'WHILE' after 'END");
+        } else {
+            throw error(peek(), "Block unterminated");
+        }
+
+        consume(NEWLINE, "Expect a newline after block.");
+
+        return statements;
     }
     private Expr assignment() {
         //Expr expr = equality();
@@ -220,6 +218,11 @@ public class Parser {
     private boolean check(TokenType type) {
         if (isAtEnd()) return false;
         return peek().type == type;
+    }
+    private boolean checkAhead(TokenType type, int lookAhead) {
+        if (isAtEnd()) return false;
+
+        return tokens.get(current + lookAhead).type == type;
     }
     private Token advance() {
         if (!isAtEnd()) current++;

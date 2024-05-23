@@ -1,5 +1,8 @@
 BEGIN CODE
-    INT A = -298, B = 5
-    DISPLAY A & " " & B
+    INT A = 1
+    WHILE (A < 5)
+    BEGIN WHILE
+    DISPLAY A
+    A = A + 1
+    END WHILE
 END CODE
-
