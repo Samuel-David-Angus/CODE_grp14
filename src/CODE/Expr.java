@@ -74,7 +74,9 @@ abstract class Expr {
     }
 
     @Override
-    <R> R accept(Visitor<R> visitor) { return visitor.visitLogicalExpr(this); }
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitLogicalExpr(this);
+    }
 
     final Expr left;
     final Token operator;

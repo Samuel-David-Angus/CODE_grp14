@@ -21,6 +21,7 @@ public class GenerateAST {
                 "Variable : Token name"
         ));
         defineAst(outputDir, "Stmt", Arrays.asList(
+                "IfChain    : List<Stmt.If> ifStatements",
                 "Block      : List<Stmt> statements",
                 "Expression : Expr expression",
                 "If         : Expr condition, Stmt thenBranch," +

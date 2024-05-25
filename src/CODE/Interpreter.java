@@ -120,6 +120,26 @@ public class Interpreter implements Expr.Visitor<Object>,
     private void execute(Stmt stmt) {
         stmt.accept(this);
     }
+
+    @Override
+    public Void visitIfChainStmt(Stmt.IfChain stmt) {
+        executeIfChain(stmt.ifStatements);
+        return null;
+    }
+    void executeIfChain(List<Stmt.If> ifstmts) {
+        try {
+            for (Stmt.If stmt : ifstmts) {
+                if (isTruthy(evaluate(stmt.condition)) || stmt.elseBranch != null) {
+                    execute(stmt);
+                    break;
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("error here");
+        }
+    }
+
     @Override
     public Void visitBlockStmt(Stmt.Block stmt) {
         executeBlock(stmt.statements, new Environment(environment));

@@ -1,8 +1,19 @@
 BEGIN CODE
-    INT A = 1
-    WHILE (A < 5)
-    BEGIN WHILE
-    DISPLAY A
-    A = A + 1
-    END WHILE
+    INT A = 7
+    IF (A == 6)
+        BEGIN IF
+            DISPLAY: "hey"
+        END IF
+    ELSE IF (A == 7)
+        BEGIN IF
+            DISPLAY: "ayo"
+        END IF
+     ELSE IF (A == 8)
+        BEGIN IF
+            DISPLAY: "888"
+        END IF
+    ELSE
+        BEGIN IF
+            DISPLAY: "YO"
+        END IF
 END CODE
